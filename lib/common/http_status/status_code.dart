@@ -1,0 +1,17 @@
+const int ok = 200;
+const int created = 201;
+const int accepted = 202;
+const int noContent = 204;
+const int badRequest = 400;
+const int unauthorized = 401;
+const int forbidden = 403;
+const int notFound = 404;
+const int methodNotAllowed = 405;
+const int conflict = 409;
+const int invalidToken = 498;
+const int refreshTokenExpired = 499;
+const int internalServerError = 500;
+const int notImplemented = 501;
+const int badGateway = 502;
+const int serviceUnavailable = 503;
+const int gatewayTimeout = 504;
