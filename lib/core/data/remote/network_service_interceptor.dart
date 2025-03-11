@@ -7,13 +7,13 @@ import 'package:mobile_auth/core/data/remote/token/token_service.dart';
 final networkServiceInterceptorProvider =
     Provider.family<NetworkServiceInterceptor, Dio>((ref, dio) {
       final tokenService = ref.watch(tokenServiceProvider(dio));
-      return NetworkServiceInterceptor(tokenService,dio);
+      return NetworkServiceInterceptor(tokenService, dio);
     });
 
 final class NetworkServiceInterceptor extends Interceptor {
   final ITokenService _tokenService;
   final Dio _dio;
-  
+
   NetworkServiceInterceptor(this._tokenService, this._dio);
 
   @override
@@ -31,12 +31,6 @@ final class NetworkServiceInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // Do something with response data
-    return super.onResponse(response, handler);
-  }
-
-  @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     // handle unauthorized error
     if (err.response?.statusCode == unauthorized) {
@@ -46,8 +40,8 @@ final class NetworkServiceInterceptor extends Interceptor {
         // refresh token request - api call
         final result = await _tokenService.refreshToken(token);
 
-        final accesToken =  result.data.accessToken;
-        final refreshToken =  result.data.refreshToken;
+        final accesToken = result.data.accessToken;
+        final refreshToken = result.data.refreshToken;
 
         // save new access token and refresh token to secure storage
         await _tokenService.saveToken(accesToken, refreshToken);
@@ -57,19 +51,17 @@ final class NetworkServiceInterceptor extends Interceptor {
         options.headers['Authorization'] = 'Bearer $accesToken';
         // repeat the request with new access token
         return handler.resolve(await _dio.fetch(options));
-        
       } on DioException catch (e) {
         if (e.response?.statusCode == refreshTokenExpired) {
           // remove access token and refresh token from secure storage
           await _tokenService.clearToken();
-        
+
           return handler.next(err);
         }
 
         // continue with the error
         return handler.next(err);
       }
-     
     }
     // continue with the error
     return handler.next(err);
