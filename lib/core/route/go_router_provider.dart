@@ -4,6 +4,7 @@ import 'package:mobile_auth/core/provider/auth_state_provider.dart';
 import 'package:mobile_auth/core/route/route_name.dart';
 import 'package:mobile_auth/features/home/presentation/ui/home_screen.dart';
 import 'package:mobile_auth/features/login/presentation/ui/login_screen.dart';
+import 'package:mobile_auth/features/setting/presentation/ui/setting_screen.dart';
 import 'package:mobile_auth/features/signup/presentation/ui/signup_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -36,13 +37,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/home',
         name: homeRoute,
         builder: (context, state) => const HomeScreen(),
-        /* routes: [
+        routes: [
           GoRoute(
             path: 'setting',
             name: settingRoute,
             builder: (context, state) => const SettingScreen(),
           ),
-        ], */
+        ],
       ),
     ],
   );

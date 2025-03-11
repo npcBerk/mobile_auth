@@ -16,7 +16,11 @@ final networkServiceProvider = Provider<Dio>((ref) {
     networkServiceInterceptorProvider(dio),
   );
 
-  dio.interceptors.addAll([HttpFormatter(), networkServiceInterceptor]);
+  dio.interceptors.addAll([
+    // ignore: deprecated_member_use
+    HttpFormatter(httpLoggerFilter: () => false),
+    networkServiceInterceptor,
+  ]);
 
   return dio;
 });
